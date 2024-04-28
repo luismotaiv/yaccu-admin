@@ -48,7 +48,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     const title = initialData ? "Editar cartel publicitario" : "Crear cartel publicitario"
     const description = initialData ? "Editar un cartel publicitario" : "Agregar un cartel publicitario"
     const toastMessage = initialData ? "Cartel publicitario actualizado." : "Cartel publicitario creado."
-    const action = initialData ? "Guardar cambios" : "Creado"
+    const action = initialData ? "Guardar cambios" : "Crear"
 
     const form = useForm<BillboardFormValues>({
         resolver: zodResolver(formSchema),
@@ -66,8 +66,8 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
             } else {
                 await axios.post(`/api/${params.storeId}/billboards`, data);
             }
-            router.refresh();
             router.push(`/${params.storeId}/billboards`)
+            router.refresh();
             toast.success(toastMessage);
         } catch (error) {
             toast.error("Algo salió mal.");
@@ -80,8 +80,8 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         try {
             setLoading(true)
             await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+            router.push(`/${params.storeId}/billboards`)
             router.refresh();
-            router.push("/")
             toast.success("Cartel publicitario eliminado.");
         } catch (error) {
             toast.error("Asegúrese de que ha eliminado todas las categorías que utilizan este cartel primero.");
@@ -156,7 +156,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                     </Button>
                 </form>
             </Form>
-            <Separator/>
         </>
     );
 };
